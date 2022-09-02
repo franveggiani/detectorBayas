@@ -358,9 +358,9 @@ class opts(object):
       'ctdet': {'default_resolution': [512, 512], 'num_classes': 80, 
                 'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
                 'dataset': 'coco'},
-      'circledet': {'default_resolution': [512, 512], 'num_classes': 1,
+      'circledet': {'default_resolution': [1024, 576], 'num_classes': 2,
                   'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
-                  'dataset': 'monuseg'},
+                  'dataset': 'grapes'},
       'exdet': {'default_resolution': [512, 512], 'num_classes': 80, 
                 'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
                 'dataset': 'coco'},
@@ -377,7 +377,7 @@ class opts(object):
     class Struct:
       def __init__(self, entries):
         for k, v in entries.items():
-          self.__setattr__(k, v)
+              self.__setattr__(k, v)
     opt = self.parse(args)
     dataset = Struct(default_dataset_info[opt.task])
     opt.dataset = dataset.dataset

@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import _init_paths
 
+
 import os
 import copy
 import torch
@@ -30,6 +31,7 @@ def main(opt):
 
     os.environ['CUDA_VISIBLE_DEVICES'] = opt.gpus_str
     opt.device = torch.device('cuda' if opt.gpus[0] >= 0 else 'cpu')
+
 
     print('Creating model...')
     model = create_model(opt.arch, opt.heads, opt.head_conv)
@@ -317,6 +319,17 @@ def IOU(box1, gts):
 
 if __name__ == '__main__':
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+
+    # task = 'circledet '
+    # lm = "--load_model ../models/circledet_monuseg_hg.pth "
+    # exp_id = '--exp_id CircleNet_HG_Grapes '
+    # arch = "--arch hourglass "
+    # bs = "--batch_size 4 "
+    # mb = "--master_batch_size 4 "
+    # lr = "--lr 2.5e-4 "
+    # arg = task+exp_id+arch+lm+bs
+    # print(arg)
+    # opt = opts().init(arg.split(' '))
 
     opt = opts().parse()
     main(opt)

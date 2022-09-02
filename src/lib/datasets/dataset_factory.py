@@ -19,6 +19,8 @@ from .dataset.kidney_first_batch_081617_ADE import KidPath_FirstBatch_081617_ADE
 from .dataset.kidney_first_batch_R24 import KidPath_FirstBatch_R24
 from .dataset.monuseg import MoNuSeg
 from .dataset.nucls import NuCLS
+from .dataset.grapes import Grapes
+
 
 dataset_factory = {
   'coco': COCO,
@@ -31,7 +33,8 @@ dataset_factory = {
   'kidney_first_batch_081617_ADE': KidPath_FirstBatch_081617_ADE,
   'kidpath_first_batch_R24': KidPath_FirstBatch_R24,
   'monuseg': MoNuSeg,
-  'nucls' : NuCLS
+  'nucls' : NuCLS,
+  'grapes' : Grapes
 }
 
 _sample_factory = {
