@@ -27,13 +27,13 @@ class Grapes(data.Dataset):
     def __init__(self, opt, split):
         super(Grapes, self).__init__()
         self.data_dir = os.path.join(opt.data_dir, 'grapes')
-        self.img_dir = os.path.join(self.data_dir, 'img')  # os.path.join(self.data_dir, '{}'.format(split))
+        self.img_dir = os.path.join(self.data_dir, '{}'.format(split))  # os.path.join(self.data_dir, '{}'.format(split))
         if opt.task == 'exdet':
             self.annot_path = os.path.join(
-                self.data_dir, 'MoNuSeg_extreme_{}2021.json').format(split)
+                self.data_dir, 'grapes_{}.json'.format(split))
         else:
             self.annot_path = os.path.join(
-                self.data_dir, 'dataset.json')  # 'MoNuSeg_{}2021.json').format(split)
+                self.data_dir, 'grapes_{}.json'.format(split))
         self.max_objs = 1000
         self.class_name = [
             '__background__', 'complete', 'uncomplete']

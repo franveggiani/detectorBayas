@@ -72,6 +72,9 @@ class Debugger(object):
       self.focal_length = 721.5377
       self.W = 1242
       self.H = 375
+    elif num_classes == 2 or dataset == 'grapes':
+      self.names = grapes_class_name
+
     # num_classes = len(self.names)
     self.down_ratio=down_ratio
     # for bird view
@@ -207,7 +210,10 @@ class Debugger(object):
     # c = self.colors[cat][0][0].tolist()
     # if self.theme == 'white':
     #   c = (255 - np.array(c)).tolist()
-    c = (0, 255, 0)
+    if cat == 0:
+        c = (0, 255, 0)
+    else:
+        c = (0, 0, 255)
     # c = (0, 255, 0)  # hardcode to green
     txt = '{}{:.1f}'.format(self.names[cat], conf)
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -215,6 +221,8 @@ class Debugger(object):
     # cv2.rectangle(
     #   self.imgs[img_id], (bbox[0], bbox[1]), (bbox[2], bbox[3]), c, 2)
     cv2.circle(self.imgs[img_id], (circle[0], circle[1]), circle[2], c, 2)
+
+
 
     if show_txt:
       bbox =  np.array(np.zeros((4)), dtype=np.int32)
@@ -561,6 +569,8 @@ nucls_class_name = [
     'mitotic_figure', 'vascular_endothelium', 'myoepithelium', 'neutrophil',
     'apoptotic_body', 'ductal_epithelium', 'eosinophil'
 ]
+
+grapes_class_name =['complete', 'uncomplete']
 
 color_list = np.array(
         [

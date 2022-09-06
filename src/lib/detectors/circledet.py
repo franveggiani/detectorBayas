@@ -110,3 +110,32 @@ class CircledetDetector(BaseDetector):
                                    circle[3], img_id=os.path.basename(name.split('.')[0]))
     debugger.show_all_imgs(pause=self.pause)
 
+class GrapesCircledetDetector(CircledetDetector):
+  def __init__(self, opt):
+    super().__init__(opt)
+
+  def show_results(self, debugger, image, results, name="demo"):
+
+    if self.opt.filter_boarder:
+      output_h = self.opt.input_h  # hard coded
+      output_w = self.opt.input_w  # hard coded
+      for j in range(1, self.num_classes + 1):
+        for i in range(len(results[j])):
+          cp = [0, 0]
+          cp[0] = results[j][i][0]
+          cp[1] = results[j][i][1]
+          cr = results[j][i][2]
+          if cp[0] - cr < 0 or cp[0] + cr > output_w:
+            results[j][i][3] = 0
+            continue
+          if cp[1] - cr < 0 or cp[1] + cr > output_h:
+            results[j][i][3] = 0
+            continue
+
+    debugger.add_img(image, img_id=os.path.basename(name.split('.')[0]))
+    for j in range(1, self.num_classes + 1):
+      for circle in results[j]:
+        if circle[3] > self.opt.vis_thresh:
+          debugger.add_coco_circle(circle[:3], circle[-1],
+                                   circle[3], img_id=os.path.basename(name.split('.')[0]))
+    debugger.show_all_imgs(pause=self.pause)
