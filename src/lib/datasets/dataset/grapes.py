@@ -17,7 +17,7 @@ import torch.utils.data as data
 
 
 class Grapes(data.Dataset):
-    num_classes = 2
+    num_classes = 1
     default_resolution = [1024, 576]
     mean = np.array([0.40789654, 0.44719302, 0.47026115],
                     dtype=np.float32).reshape(1, 1, 3)
@@ -36,8 +36,8 @@ class Grapes(data.Dataset):
                 self.data_dir, 'grapes_{}.json'.format(split))
         self.max_objs = 1000
         self.class_name = [
-            '__background__', 'complete', 'uncomplete']
-        self._valid_ids = [1, 2]
+            '__background__', 'grape']
+        self._valid_ids = [1]
         self.cat_ids = {v: i for i, v in enumerate(self._valid_ids)}
         self.voc_color = [(v // 32 * 64 + 64, (v // 8) % 4 * 64, v % 8 * 32) \
                           for v in range(1, self.num_classes + 1)]

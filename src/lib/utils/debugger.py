@@ -572,7 +572,7 @@ nucls_class_name = [
     'apoptotic_body', 'ductal_epithelium', 'eosinophil'
 ]
 
-grapes_class_name =['complete', 'uncomplete']
+grapes_class_name =['grape']
 
 color_list = np.array(
         [
