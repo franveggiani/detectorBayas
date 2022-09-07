@@ -72,7 +72,7 @@ class Debugger(object):
       self.focal_length = 721.5377
       self.W = 1242
       self.H = 375
-    elif num_classes == 2 or dataset == 'grapes':
+    elif num_classes == 1 or dataset == 'grapes':
       self.names = grapes_class_name
 
     # num_classes = len(self.names)
@@ -204,23 +204,21 @@ class Debugger(object):
 
   def add_coco_circle(self, circle, cat=0, conf=1, show_txt=False, img_id='default'):
     circle = np.array(circle, dtype=np.int32)
+    cat=0
     # cat = (int(cat) + 1) % 80
     cat = int(cat)
     # print('cat', cat, self.names[cat])
     # c = self.colors[cat][0][0].tolist()
     # if self.theme == 'white':
     #   c = (255 - np.array(c)).tolist()
-    if cat == 0:
-        c = (0, 255, 0)
-    else:
-        c = (0, 0, 255)
+    c = (0, 255, 0)
     # c = (0, 255, 0)  # hardcode to green
     txt = '{}{:.1f}'.format(self.names[cat], conf)
     font = cv2.FONT_HERSHEY_SIMPLEX
     cat_size = cv2.getTextSize(txt, font, 0.5, 2)[0]
     # cv2.rectangle(
     #   self.imgs[img_id], (bbox[0], bbox[1]), (bbox[2], bbox[3]), c, 2)
-    cv2.circle(self.imgs[img_id], (circle[0], circle[1]), circle[2], c, 2)
+    cv2.circle(self.imgs[img_id], (circle[0], circle[1]), circle[2], c, 1)
 
 
 

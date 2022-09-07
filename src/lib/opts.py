@@ -358,7 +358,7 @@ class opts(object):
       'ctdet': {'default_resolution': [512, 512], 'num_classes': 80,
                 'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
                 'dataset': 'coco'},
-      'circledet': {'default_resolution': [1024, 576], 'num_classes': 2,
+      'circledet': {'default_resolution': [1024, 576], 'num_classes': 1,
                   'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
                   'dataset': 'grapes'},
       'exdet': {'default_resolution': [512, 512], 'num_classes': 80, 
