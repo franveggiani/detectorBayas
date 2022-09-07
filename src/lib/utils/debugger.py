@@ -259,13 +259,15 @@ class Debugger(object):
                                        points[i][j][1] * self.down_ratio),
                    3, (int(c[0]), int(c[1]), int(c[2])), -1)
 
-  def show_all_imgs(self, pause=False, time=0):
+  def show_all_imgs(self,image_or_path_or_tensor, pause=False, time=0):
     if not self.ipynb:
       for i, v in self.imgs.items():
-        cv2.imshow('{}'.format(i), v)
-      if cv2.waitKey(0 if pause else 1) == 27:
-        import sys
-        sys.exit(0)
+        # cv2.imshow('{}'.format(i), v)
+        path, image_name = os.path.split(image_or_path_or_tensor)
+        cv2.imwrite('../data/detections/' + image_name, v)
+      # if cv2.waitKey(0 if pause else 1) == 27:
+      #   import sys
+      #   sys.exit(0)
     else:
       self.ax = None
       nImgs = len(self.imgs)

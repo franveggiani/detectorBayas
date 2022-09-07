@@ -114,7 +114,7 @@ class GrapesCircledetDetector(CircledetDetector):
   def __init__(self, opt):
     super().__init__(opt)
 
-  def show_results(self, debugger, image, results, name="demo"):
+  def show_results(self, debugger, image, image_or_path_or_tensor,results, name="demo"):
 
     if self.opt.filter_boarder:
       output_h = self.opt.input_h  # hard coded
@@ -138,4 +138,4 @@ class GrapesCircledetDetector(CircledetDetector):
         if circle[3] > self.opt.vis_thresh:
           debugger.add_coco_circle(circle[:3], circle[-1],
                                    circle[3], img_id=os.path.basename(name.split('.')[0]))
-    debugger.show_all_imgs(pause=self.pause)
+    debugger.show_all_imgs(image_or_path_or_tensor,pause=self.pause)
