@@ -1,4 +1,4 @@
-# CircleNet: Anchor-free Detection with Circle Representation
+# PolygonNet: Anchor-free Detection with Poligon Representation
 The official implementation of CircleNet, *MICCAI 2020*, *IEEE TMI 2021*
 
 ![](docs/fig1.png)
