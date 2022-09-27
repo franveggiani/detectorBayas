@@ -260,7 +260,7 @@ class PolygonDataset(data.Dataset):
                         continue
                     if cp[1] - cr < 0 or cp[1] + cr > output_h:
                         continue
-                gt_det.append([cp[0], cp[1], cr, 1, cls_id])
+                gt_det.append([cp[0], cp[1], *cr, 1, cls_id])
 
                 # if ind_cl[0]<0:
                 #     aaa = 1
@@ -283,7 +283,7 @@ class PolygonDataset(data.Dataset):
             ret.update({'reg': reg_cl})
         if self.opt.debug > 0 or not self.split == 'train':
             gt_det = np.array(gt_det, dtype=np.float32) if len(gt_det) > 0 else \
-                np.zeros((1, 5), dtype=np.float32)
+                np.zeros((1, 12), dtype=np.float32)
             meta = {'c': c, 's': s, 'gt_det': gt_det, 'img_id': img_id}
             ret['meta'] = meta
         return ret
