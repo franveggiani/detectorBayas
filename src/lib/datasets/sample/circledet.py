@@ -153,7 +153,9 @@ class CirCleDataset(data.Dataset):
             bbox[2:] = affine_transform(bbox[2:], trans_output)
             center_point_aff = affine_transform(center_point, trans_output)
             center_radius_aff = center_radius * trans_output[0][0]
-            bbox[[0, 2]] = np.clip(bbox[[0, 2]], 0, output_w - 1)
+            bbox[[0, 2]] = np.clip(bbox[[0, 2]], 0, output_w - 1) # TODO ver que hacer con las etiquetas cuando queda un
+                                                                  # pedazo fuera de imagen
+                                                                  # con la bounding box usan np.clip
             bbox[[1, 3]] = np.clip(bbox[[1, 3]], 0, output_h - 1)
             h, w = bbox[3] - bbox[1], bbox[2] - bbox[0]
             if h > 0 and w > 0 and center_point_aff[0]>0 \
