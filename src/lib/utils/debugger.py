@@ -7,7 +7,7 @@ import cv2
 import os
 import json
 from .ddd_utils import compute_box_3d, project_to_image, draw_box_3d
-
+from utils.image import to_polar_coords, to_cartesian_coords,to_absolut_ref
 class Debugger(object):
   def __init__(self, ipynb=False, theme='black',
                num_classes=-1, dataset=None, down_ratio=4):
@@ -74,6 +74,8 @@ class Debugger(object):
       self.H = 375
     elif num_classes == 1 or dataset == 'grapes':
       self.names = grapes_class_name
+    elif num_classes == 1 or dataset == 'polygons':
+      self.names = polygons_class_name
 
     # num_classes = len(self.names)
     self.down_ratio=down_ratio
@@ -220,8 +222,29 @@ class Debugger(object):
     #   self.imgs[img_id], (bbox[0], bbox[1]), (bbox[2], bbox[3]), c, 2)
     cv2.circle(self.imgs[img_id], (circle[0], circle[1]), circle[2], c, 1)
 
-
-
+  def add_coco_polygon(self, polygon, cat=0, conf=1, show_txt=False, img_id='default'):
+    polygon = np.array(polygon, dtype=np.int32)
+    cat = 0
+    center = (polygon[0], polygon[1])
+    polygon = polygon[2:10]
+    # cat = (int(cat) + 1) % 80
+    cat = int(cat)
+    c = (0, 255, 0)
+    txt = '{}{:.1f}'.format(self.names[cat], conf)
+    thickness = 1
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    cat_size = cv2.getTextSize(txt, font, 0.5, 2)[0]
+    # cv2.rectangle(
+    #   self.imgs[img_id], (bbox[0], bbox[1]), (bbox[2], bbox[3]), c, 2)
+    isClosed = True
+    polygon = to_cartesian_coords(polygon)
+    polygon = to_absolut_ref(polygon, center)
+    polygon = np.int32(np.rint(np.asarray([[polygon[i], polygon[i+1]] for i in range(0,len(polygon)-1, 2)])))
+    # cv2.imshow('',self.imgs[img_id])
+    # cv2.waitKey(0)
+    cv2.polylines(self.imgs[img_id], [polygon], isClosed, c, thickness)
+    # cv2.imshow('', self.imgs[img_id])
+    # cv2.waitKey(0)
     if show_txt:
       bbox =  np.array(np.zeros((4)), dtype=np.int32)
       bbox[0] = circle[0] - circle[2]
@@ -243,6 +266,10 @@ class Debugger(object):
         cv2.line(self.imgs[img_id], (points[e[0], 0], points[e[0], 1]),
                       (points[e[1], 0], points[e[1], 1]), self.ec[j], 2,
                       lineType=cv2.LINE_AA)
+
+
+
+
 
   def add_points(self, points, img_id='default'):
     num_classes = len(points)
@@ -570,7 +597,8 @@ nucls_class_name = [
     'apoptotic_body', 'ductal_epithelium', 'eosinophil'
 ]
 
-grapes_class_name =['grape']
+grapes_class_name = ['grape']
+polygons_class_name = ['polygon']
 
 color_list = np.array(
         [
