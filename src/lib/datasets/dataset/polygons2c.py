@@ -25,8 +25,8 @@ class Polygons2c(data.Dataset):
                    dtype=np.float32).reshape(1, 1, 3)
 
     def __init__(self, opt, split):
-        super(Polygons, self).__init__()
-        self.data_dir = os.path.join(opt.data_dir, 'polygons')
+        super(Polygons2c, self).__init__()
+        self.data_dir = os.path.join(opt.data_dir, 'polygons2c')
         self.img_dir = os.path.join(self.data_dir, '{}'.format(split))  # os.path.join(self.data_dir, '{}'.format(split))
         if opt.task == 'exdet':
             self.annot_path = os.path.join(
@@ -36,8 +36,8 @@ class Polygons2c(data.Dataset):
                 self.data_dir, 'polygons_{}.json'.format(split))
         self.max_objs = 1000
         self.class_name = [
-            '__background__', 'polygon']
-        self._valid_ids = [1]
+            '__background__', 'cat1', 'cat2']
+        self._valid_ids = [1, 2]
         self.cat_ids = {v: i for i, v in enumerate(self._valid_ids)}
         self.voc_color = [(v // 32 * 64 + 64, (v // 8) % 4 * 64, v % 8 * 32) \
                           for v in range(1, self.num_classes + 1)]
@@ -56,7 +56,7 @@ class Polygons2c(data.Dataset):
         opt.default_resolution = self.default_resolution
         self.opt = opt
 
-        print('==> initializing Polygons 2022 {} data.'.format(split))
+        print('==> initializing Polygons 2c 2022 {} data.'.format(split))
         self.coco = coco.COCO(self.annot_path)
         self.images = self.coco.getImgIds()
         self.num_samples = len(self.images)
