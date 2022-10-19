@@ -26,16 +26,16 @@ class PolygondetDetector(BaseDetector):
     with torch.no_grad():
       output = self.model(images)[-1]
       hm = output['hm'].sigmoid_() #centro
-      cl = output['cl'] # radios en polar
+      polygon_vertices = output['cl'] # radios en polar
       reg = output['reg'] if self.opt.reg_offset else None #offset
-      if self.opt.flip_test:
+      if self.opt.flip_test: #esto no se ejecuta flip_test es False
         hm = (hm[0:1] + flip_tensor(hm[1:2])) / 2
-        cl = (cl[0:1] + flip_tensor(cl[1:2])) / 2
+        cl = (polygon_vertices[0:1] + flip_tensor(polygon_vertices[1:2])) / 2
         reg = reg[0:1] if reg is not None else None
       torch.cuda.synchronize()
       forward_time = time.time()
-      dets = polygondet_decode(hm, cl, reg=reg, K=self.opt.K)
-
+      dets = polygondet_decode(hm, polygon_vertices, reg=reg, K=self.opt.K)
+      #Size([1, 1000, 12]) 0:2 x y; 2:10 polygon vertices; 10 scores; 11 clase
     if return_time:
       return output, dets, forward_time
     else:

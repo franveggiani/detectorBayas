@@ -602,7 +602,7 @@ def multi_pose_decode(
     
   return detections
 
-def polygondet_decode(heat, cl, reg=None, cat_spec_wh=False, K=100):
+def polygondet_decode(heat, polygon_vertices, reg=None, cat_spec_wh=False, K=100):
     batch, cat, height, width = heat.size()
 
     # heat = torch.sigmoid(heat)
@@ -610,21 +610,23 @@ def polygondet_decode(heat, cl, reg=None, cat_spec_wh=False, K=100):
     heat = _nms(heat)
 
     scores, inds, clses, ys, xs = _topk(heat, K=K)
-    if reg is not None:
+    if reg is not None: #por acá
         reg = _tranpose_and_gather_feat(reg, inds)
+        #torch.Size([1, 1000, 2])
         reg = reg.view(batch, K, 2)
-        xs = xs.view(batch, K, 1) + reg[:, :, 0:1]
+        # torch.Size([1, 1000, 2])
+        xs = xs.view(batch, K, 1) + reg[:, :, 0:1]#acá suma el offset a el centro del heatmap
         ys = ys.view(batch, K, 1) + reg[:, :, 1:2]
     else:
         xs = xs.view(batch, K, 1) + 0.5
         ys = ys.view(batch, K, 1) + 0.5
-    cl = _tranpose_and_gather_feat(cl, inds)
+    polygon_vertices = _tranpose_and_gather_feat(polygon_vertices, inds)
 
-    cl = cl.view(batch, K, 8)
+    polygon_vertices = polygon_vertices.view(batch, K, 8)
     clses = clses.view(batch, K, 1).float()
     scores = scores.view(batch, K, 1)
     # print(scores)
-    polygons = torch.cat([xs, ys, cl], dim =2)
+    polygons = torch.cat([xs, ys, polygon_vertices], dim =2)
     # bboxes = torch.cat([xs - wh[..., 0:1] / 2,
     #                     ys - wh[..., 1:2] / 2,
     #                     xs + wh[..., 0:1] / 2,

@@ -22,6 +22,7 @@ from .dataset.monuseg import MoNuSeg
 from .dataset.nucls import NuCLS
 from .dataset.grapes import Grapes
 from .dataset.polygons import Polygons
+from .dataset.polygons2c import Polygons2c
 
 
 dataset_factory = {
@@ -37,6 +38,7 @@ dataset_factory = {
   'monuseg': MoNuSeg,
   'nucls' : NuCLS,
   'polygons' : Polygons,
+  'polygons2c': Polygons2c,
   'grapes' : Grapes
 }
 
@@ -46,7 +48,8 @@ _sample_factory = {
   'ddd': DddDataset,
   'multi_pose': MultiPoseDataset,
   'circledet': CirCleDataset,
-  'polygondet': PolygonDataset
+  'polygondet': PolygonDataset,
+  'polygondet2c': PolygonDataset
 }
 
 
