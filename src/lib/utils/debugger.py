@@ -289,7 +289,7 @@ class Debugger(object):
       for i, v in self.imgs.items():
         # cv2.imshow('{}'.format(i), v)
         path, image_name = os.path.split(image_or_path_or_tensor)
-        cv2.imwrite('../data/detections/' + image_name, v)
+        cv2.imwrite('../img/detections/' + image_name, v)
       # if cv2.waitKey(0 if pause else 1) == 27:
       #   import sys
       #   sys.exit(0)
