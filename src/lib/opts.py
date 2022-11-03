@@ -342,7 +342,7 @@ class opts(object):
         opt.heads.update({'reg': 2})
     elif opt.task == 'polygondet':
       opt.heads = {'hm': opt.num_classes,
-                   'cl': opt.vertices_number * 2 * opt.num_classes}
+                   'cl': opt.vertices_number * 2 }#* opt.num_classes
       if opt.reg_offset:
         opt.heads.update({'reg': 2})
     elif opt.task == 'multi_pose':
