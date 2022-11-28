@@ -11,7 +11,7 @@ class opts(object):
     self.parser = argparse.ArgumentParser()
     # basic experiment setting
     self.parser.add_argument('task', default='circledet',
-                             help='ctdet | ddd | multi_pose | exdet | circledet')
+                             help='ctdet | ddd | multi_pose | exdet | circledet | cdiou')
     self.parser.add_argument('--dataset', default='monuseg',
                              help='coco | kitti | coco_hp | pascal | kidpath | monuseg')
     self.parser.add_argument('--exp_id', default='default')
@@ -284,6 +284,7 @@ class opts(object):
 
     opt.root_dir = os.path.join(os.path.dirname(__file__), '..', '..')
     opt.data_dir = os.path.join(opt.root_dir, 'data')
+    # opt.data_dir = '/mnt/datos/datasets'
     opt.exp_dir = os.path.join(opt.root_dir, 'exp', opt.task)
     opt.save_dir = os.path.join(opt.exp_dir, opt.exp_id)
     opt.debug_dir = os.path.join(opt.save_dir, 'debug')
@@ -336,8 +337,17 @@ class opts(object):
       # assert opt.dataset in ['pascal', 'coco']
       opt.heads = {'hm': opt.num_classes,
                    'cl': 1 if not opt.cat_spec_wh else 1 * opt.num_classes}
+
       if opt.reg_offset:
         opt.heads.update({'reg': 2})
+
+      #cdiou
+    elif opt.task == 'cdiou':
+      # assert opt.dataset in ['pascal', 'coco']
+      opt.heads = {'hm': opt.num_classes,
+                   'cl': 1 if not opt.cat_spec_wh else 1 * opt.num_classes,
+                   'reg': 2,
+                   'occ': 1}
     elif opt.task == 'multi_pose':
       # assert opt.dataset in ['coco_hp']
       opt.flip_idx = dataset.flip_idx

@@ -20,7 +20,7 @@ from .dataset.kidney_first_batch_R24 import KidPath_FirstBatch_R24
 from .dataset.monuseg import MoNuSeg
 from .dataset.nucls import NuCLS
 from .dataset.grapes import Grapes
-
+from .dataset.grapes_with_occ_reg import GrapesWithOcc
 
 dataset_factory = {
   'coco': COCO,
@@ -34,7 +34,8 @@ dataset_factory = {
   'kidpath_first_batch_R24': KidPath_FirstBatch_R24,
   'monuseg': MoNuSeg,
   'nucls' : NuCLS,
-  'grapes' : Grapes
+  'grapes' : Grapes,
+  'grapes_with_occ': GrapesWithOcc
 }
 
 _sample_factory = {
