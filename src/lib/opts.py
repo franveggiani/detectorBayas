@@ -11,9 +11,9 @@ class opts(object):
     self.parser = argparse.ArgumentParser()
     # basic experiment setting
     self.parser.add_argument('task', default='circledet',
-                             help='ctdet | ddd | multi_pose | exdet | circledet | cdiou')
+                             help='ctdet | ddd | multi_pose | exdet | circledet | polygondet')
     self.parser.add_argument('--dataset', default='monuseg',
-                             help='coco | kitti | coco_hp | pascal | kidpath | monuseg')
+                             help='coco | kitti | coco_hp | pascal | kidpath | monuseg | polygons')
     self.parser.add_argument('--exp_id', default='default')
     self.parser.add_argument('--test', action='store_true')
     self.parser.add_argument('--ontestdata', action='store_true')
@@ -68,7 +68,7 @@ class opts(object):
                              choices=['white', 'black'])
     
     # model
-    self.parser.add_argument('--arch', default='dla_34', 
+    self.parser.add_argument('--arch', default='hourglass',
                              help='model architecture. Currently tested'
                                   'res_18 | res_101 | resdcn_18 | resdcn_101 |'
                                   'dlav0_34 | dla_34 | hourglass')
@@ -79,6 +79,8 @@ class opts(object):
                                   '64 for resnets and 256 for dla.')
     self.parser.add_argument('--down_ratio', type=int, default=4,
                              help='output stride. Currently only supports 4.')
+    self.parser.add_argument('--vertices_number', type=int, default=4,
+                             help='Currently only supports 4.')
 
     # input
     self.parser.add_argument('--input_res', type=int, default=-1, 
@@ -340,7 +342,6 @@ class opts(object):
 
       if opt.reg_offset:
         opt.heads.update({'reg': 2})
-
       #cdiou
     elif opt.task == 'cdiou':
       # assert opt.dataset in ['pascal', 'coco']
@@ -348,6 +349,13 @@ class opts(object):
                    'cl': 1 if not opt.cat_spec_wh else 1 * opt.num_classes,
                    'reg': 2,
                    'occ': 1}
+
+    elif opt.task == 'polygondet':
+      opt.heads = {'hm': opt.num_classes,
+                   'cl': opt.vertices_number * 2 }#* opt.num_classes
+      if opt.reg_offset:
+        opt.heads.update({'reg': 2})
+
     elif opt.task == 'multi_pose':
       # assert opt.dataset in ['coco_hp']
       opt.flip_idx = dataset.flip_idx
@@ -371,6 +379,12 @@ class opts(object):
       'circledet': {'default_resolution': [1024, 576], 'num_classes': 1,
                   'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
                   'dataset': 'grapes'},
+      'polygondet': {'default_resolution': [1024, 576], 'num_classes': 1,
+                  'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
+                  'dataset': 'polygons'},
+      'polygondet2c': {'default_resolution': [1024, 576], 'num_classes': 2,
+                     'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
+                     'dataset': 'polygons2c'},
       'exdet': {'default_resolution': [512, 512], 'num_classes': 80, 
                 'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
                 'dataset': 'coco'},

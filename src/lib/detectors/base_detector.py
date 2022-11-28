@@ -38,7 +38,7 @@ class BaseDetector(object):
     height, width = image.shape[0:2]
     new_height = int(height * scale)
     new_width  = int(width * scale)
-    if self.opt.fix_res:
+    if self.opt.fix_res: #vamos por acá
       inp_height, inp_width = self.opt.input_h, self.opt.input_w
       c = np.array([new_width / 2., new_height / 2.], dtype=np.float32)
       s = max(height, width) * 1.0
@@ -102,8 +102,8 @@ class BaseDetector(object):
     for scale in self.scales:
       scale_start_time = time.time()
       if not pre_processed:
-        images, meta = self.pre_process(image, scale, meta)
-      else:
+        images, meta = self.pre_process(image, scale, meta)#meta es None
+      else:#po acá no va
         # import pdb; pdb.set_trace()
         images = pre_processed_images['images'][scale][0]
         meta = pre_processed_images['meta'][scale]
