@@ -15,7 +15,7 @@ from utils.image import draw_dense_reg
 import math
 
 
-class CirCleDataset(data.Dataset):
+class CirCleDatasetWithOcclusion(data.Dataset):
     def _coco_box_to_bbox(self, box):
         bbox = np.array([box[0], box[1], box[0] + box[2], box[1] + box[3]],
                         dtype=np.float32)
@@ -117,6 +117,7 @@ class CirCleDataset(data.Dataset):
 
         # Add for circle
         cl = np.zeros((self.max_objs, 1), dtype=np.float32)
+        occ = np.zeros((self.max_objs, 1), dtype=np.float32)
         dense_cl = np.zeros((1, output_h, output_w), dtype=np.float32)
         reg_cl = np.zeros((self.max_objs, 2), dtype=np.float32)
         ind_cl = np.zeros((self.max_objs), dtype=np.int64)
@@ -139,7 +140,7 @@ class CirCleDataset(data.Dataset):
             # print(int(self.cat_ids[int(ann['category_id'])]))
 
             cls_id = int(self.cat_ids[int(ann['category_id'])])
-            occ = self.cat_ids[int(ann['occlusion_factor'])]
+            occlusion_factor = ann['occlusion_factor']
             center_point = ann['circle_center']
             center_radius = ann['circle_radius']
 
@@ -189,6 +190,7 @@ class CirCleDataset(data.Dataset):
                 reg_mask[k] = 1
                 cr = center_radius_aff
                 cl[k] = 1. * cr
+                occ[k] = 1. * occlusion_factor
                 cat_spec_cl[k, cls_id * 1: cls_id * 1 + 1] = cl[k]
                 cat_spec_clmask[k, cls_id * 1: cls_id * 1 + 1] = 1
                 if self.opt.filter_boarder:

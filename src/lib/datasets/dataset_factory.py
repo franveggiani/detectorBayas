@@ -8,6 +8,7 @@ from .sample.ctdet import CTDetDataset
 from .sample.circledet import CirCleDataset
 from .sample.multi_pose import MultiPoseDataset
 from .sample.polydet import PolygonDataset
+from .sample.circledet_with_occ import CirCleDatasetWithOcclusion
 
 from .dataset.coco import COCO
 from .dataset.pascal import PascalVOC
@@ -25,6 +26,7 @@ from .dataset.grapes_with_occ_reg import GrapesWithOcc
 from .dataset.polygons import Polygons
 from .dataset.polygons2c import Polygons2c
 
+
 dataset_factory = {
   'coco': COCO,
   'pascal': PascalVOC,
@@ -39,7 +41,7 @@ dataset_factory = {
   'nucls' : NuCLS,
   'grapes' : Grapes,
   'grapes_with_occ': GrapesWithOcc,
-  'polygons' : Polygons,
+  'polygons': Polygons,
   'polygons2c': Polygons2c,
 }
 
@@ -49,6 +51,7 @@ _sample_factory = {
   'ddd': DddDataset,
   'multi_pose': MultiPoseDataset,
   'circledet': CirCleDataset,
+  'cdiou': CirCleDatasetWithOcclusion,
   'polygondet': PolygonDataset,
   'polygondet2c': PolygonDataset
 }
