@@ -26,7 +26,8 @@ class GrapesWithOcc(data.Dataset):
 
     def __init__(self, opt, split):
         super(GrapesWithOcc, self).__init__()
-        self.data_dir = os.path.join(opt.data_dir, 'grapes_mix_iou_reg')
+        # self.data_dir = os.path.join(opt.data_dir, 'grapes_mix_iou_reg')
+        self.data_dir = os.path.join(opt.data_dir, 'grapes')
         self.img_dir = os.path.join(self.data_dir, '{}'.format(split))  # os.path.join(self.data_dir, '{}'.format(split))
         if opt.task == 'exdet':
             self.annot_path = os.path.join(
