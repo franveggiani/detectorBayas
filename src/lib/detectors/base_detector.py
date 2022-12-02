@@ -84,6 +84,7 @@ class BaseDetector(object):
     merge_time, tot_time = 0, 0
     debugger = Debugger(dataset=self.opt.dataset, ipynb=(self.opt.debug==3),
                         theme=self.opt.debugger_theme)
+    debugger.opt = self.opt
     start_time = time.time()
     pre_processed = False
     if isinstance(image_or_path_or_tensor, np.ndarray):

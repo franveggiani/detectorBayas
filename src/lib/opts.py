@@ -12,6 +12,9 @@ class opts(object):
     # basic experiment setting
     self.parser.add_argument('task', default='circledet',
                              help='ctdet | ddd | multi_pose | exdet | circledet | polygondet')
+    self.parser.add_argument('--confidence_threshold', type=float, default=0.4,
+                             help='minimum confidence for a detection to be considered')
+
     self.parser.add_argument('--dataset', default='monuseg',
                              help='coco | kitti | coco_hp | pascal | kidpath | monuseg | polygons')
     self.parser.add_argument('--exp_id', default='default')
@@ -28,6 +31,8 @@ class opts(object):
     self.parser.add_argument('--demo', default='', 
                              help='path to image/ image folders/ video. '
                                   'or "webcam"')
+    self.parser.add_argument('--inference_folder', default='/mnt/datos/inferencia/',
+                             help='output path for inference')
     self.parser.add_argument('--demo_dir', default='',
                              help='output path to image/ image folders/ video. ')
     self.parser.add_argument('--load_model', default='',
@@ -62,7 +67,7 @@ class opts(object):
                              help='save model to disk every 5 epochs.')
     self.parser.add_argument('--metric', default='loss', 
                              help='main metric to save best model')
-    self.parser.add_argument('--vis_thresh', type=float, default=0.2,
+    self.parser.add_argument('--vis_thresh', type=float, default=0,
                              help='visualization threshold.')
     self.parser.add_argument('--debugger_theme', default='white',
                              choices=['white', 'black'])
@@ -381,6 +386,9 @@ class opts(object):
       'circledet': {'default_resolution': [1024, 576], 'num_classes': 1,
                   'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
                   'dataset': 'grapes'},
+      'cdiou': {'default_resolution': [1024, 576], 'num_classes': 1,
+                   'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
+                   'dataset': 'grapes_with_occ_reg'},
       'polygondet': {'default_resolution': [1024, 576], 'num_classes': 1,
                   'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
                   'dataset': 'polygons'},

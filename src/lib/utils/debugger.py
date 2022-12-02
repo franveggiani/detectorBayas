@@ -74,6 +74,8 @@ class Debugger(object):
       self.H = 375
     elif num_classes == 1 or dataset == 'grapes':
       self.names = grapes_class_name
+    elif num_classes == 1 or dataset == 'grapes_with_occ_reg':
+      self.names = grapes_wo_class_name
     elif num_classes == 1 or dataset == 'polygons':
       self.names = polygons_class_name
 
@@ -222,6 +224,33 @@ class Debugger(object):
     #   self.imgs[img_id], (bbox[0], bbox[1]), (bbox[2], bbox[3]), c, 2)
     cv2.circle(self.imgs[img_id], (circle[0], circle[1]), circle[2], c, 1)
 
+  def add_circle_and_occlusion(self, circle, occ, cat=0, conf=1, show_txt=False, img_id='default'):
+    circle = np.array(circle, dtype=np.int32)
+    cat=0
+    occ = round(occ, 2)
+
+    # cat = (int(cat) + 1) % 80
+    cat = int(cat)
+    # print('cat', cat, self.names[cat])
+    # c = self.colors[cat][0][0].tolist()
+    # if self.theme == 'white':
+    #   c = (255 - np.array(c)).tolist()
+    c = (0, 255, 0)
+    # c = (0, 255, 0)  # hardcode to green
+    txt = '{}{:.1f}'.format(self.names[cat], conf)
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    cat_size = cv2.getTextSize(txt, font, 0.5, 2)[0]
+    # cv2.rectangle(
+    #   self.imgs[img_id], (bbox[0], bbox[1]), (bbox[2], bbox[3]), c, 2)
+    cv2.circle(self.imgs[img_id], (circle[0], circle[1]), circle[2], c, 1)
+
+    org = (circle[0], circle[1])
+    fontScale = 0.3
+    color = (0, 255, 0)
+    thickness = 1
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    cv2.putText(self.imgs[img_id], str(occ), org, font,
+              fontScale, color, thickness, cv2.LINE_AA)
   def add_coco_polygon(self, polygon, cat=0, conf=1, show_txt=False, img_id='default'):
     polygon = np.array(polygon, dtype=np.int32)
     cat = 0
@@ -247,8 +276,8 @@ class Debugger(object):
     # cv2.waitKey(0)
     if show_txt:
       bbox =  np.array(np.zeros((4)), dtype=np.int32)
-      bbox[0] = circle[0] - circle[2]
-      bbox[1] = circle[1] - circle[2]
+      # bbox[0] = circle[0] - circle[2]
+      # bbox[1] = circle[1] - circle[2]
       cv2.rectangle(self.imgs[img_id],
                     (bbox[0], bbox[1] - cat_size[1] - 2),
                     (bbox[0] + cat_size[0], bbox[1] - 2), c, -1)
@@ -289,7 +318,7 @@ class Debugger(object):
       for i, v in self.imgs.items():
         # cv2.imshow('{}'.format(i), v)
         path, image_name = os.path.split(image_or_path_or_tensor)
-        cv2.imwrite('../img/detections/' + image_name, v)
+        cv2.imwrite(self.opt.inference_folder + image_name, v)
       # if cv2.waitKey(0 if pause else 1) == 27:
       #   import sys
       #   sys.exit(0)
@@ -598,6 +627,7 @@ nucls_class_name = [
 ]
 
 grapes_class_name = ['grape']
+grapes_wo_class_name = ['grape']
 polygons_class_name = ['polygon']
 
 color_list = np.array(
