@@ -9,6 +9,7 @@ from .sample.circledet import CirCleDataset
 from .sample.multi_pose import MultiPoseDataset
 from .sample.polydet import PolygonDataset
 from .sample.circledet_with_occ import CirCleDatasetWithOcclusion
+from .sample.quadrilateral_dataset import  QuadrilateralDataset
 
 from .dataset.coco import COCO
 from .dataset.pascal import PascalVOC
@@ -25,7 +26,7 @@ from .dataset.grapes import Grapes
 from .dataset.grapes_with_occ_reg import GrapesWithOcc
 from .dataset.polygons import Polygons
 from .dataset.polygons2c import Polygons2c
-
+from .dataset.quadrilateral2c import Quadrilateral2c
 
 dataset_factory = {
   'coco': COCO,
@@ -43,6 +44,7 @@ dataset_factory = {
   'grapes_with_occ': GrapesWithOcc,
   'polygons': Polygons,
   'polygons2c': Polygons2c,
+  'quadrilateral2c': Quadrilateral2c
 }
 
 _sample_factory = {
@@ -53,7 +55,8 @@ _sample_factory = {
   'circledet': CirCleDataset,
   'cdiou': CirCleDatasetWithOcclusion,
   'polygondet': PolygonDataset,
-  'polygondet2c': PolygonDataset
+  'polygondet2c': PolygonDataset,
+  'quadridet': QuadrilateralDataset
 }
 
 

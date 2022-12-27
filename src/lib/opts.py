@@ -11,12 +11,12 @@ class opts(object):
     self.parser = argparse.ArgumentParser()
     # basic experiment setting
     self.parser.add_argument('task', default='circledet',
-                             help='ctdet | ddd | multi_pose | exdet | circledet | polygondet')
+                             help='ctdet | ddd | multi_pose | exdet | circledet | polygondet | quadridet')
     self.parser.add_argument('--confidence_threshold', type=float, default=0.4,
                              help='minimum confidence for a detection to be considered')
 
     self.parser.add_argument('--dataset', default='monuseg',
-                             help='coco | kitti | coco_hp | pascal | kidpath | monuseg | polygons')
+                             help='coco | kitti | coco_hp | pascal | kidpath | monuseg | polygons | quadrilaterals2c')
     self.parser.add_argument('--exp_id', default='default')
     self.parser.add_argument('--test', action='store_true')
     self.parser.add_argument('--ontestdata', action='store_true')
@@ -292,8 +292,8 @@ class opts(object):
     print('training chunk_sizes:', opt.chunk_sizes)
 
     opt.root_dir = os.path.join(os.path.dirname(__file__), '..', '..')
-    opt.data_dir = os.path.join(opt.root_dir, 'data')
-    # opt.data_dir = '/mnt/datos/datasets'
+    # opt.data_dir = os.path.join(opt.root_dir, 'data')
+    opt.data_dir = '/mnt/datos/datasets'
     opt.exp_dir = os.path.join(opt.root_dir, 'exp', opt.task)
     opt.save_dir = os.path.join(opt.exp_dir, opt.exp_id)
     opt.debug_dir = os.path.join(opt.save_dir, 'debug')
@@ -373,6 +373,16 @@ class opts(object):
         opt.heads.update({'hm_hp': 17})
       if opt.reg_hp_offset:
         opt.heads.update({'hp_offset': 2})
+    elif opt.task == 'quadridet':
+      # assert opt.dataset in ['coco_hp']
+      opt.flip_idx = dataset.flip_idx
+      opt.heads = {'hm': opt.num_classes, 'wh': 2, 'hps': 8}
+      if opt.reg_offset:
+        opt.heads.update({'reg': 2})
+      if opt.hm_hp:
+        opt.heads.update({'hm_hp': 4})
+      if opt.reg_hp_offset:
+        opt.heads.update({'hp_offset': 2})
     else:
       assert 0, 'task not defined!'
     print('heads', opt.heads)
@@ -407,6 +417,9 @@ class opts(object):
       'ddd': {'default_resolution': [384, 1280], 'num_classes': 3, 
                 'mean': [0.485, 0.456, 0.406], 'std': [0.229, 0.224, 0.225],
                 'dataset': 'kitti'},
+      'quadridet': {'default_resolution': [1024, 576], 'num_classes': 2,
+                         'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
+                         'dataset': 'quadrilaterals2c'},
     }
     class Struct:
       def __init__(self, entries):

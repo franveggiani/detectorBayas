@@ -9,6 +9,7 @@ from .exdet import ExdetTrainer
 from .multi_pose import MultiPoseTrainer
 from .polygondet import PolygonTrainer
 from  .cdiou import CircleTrainerWithOcc
+from .quadridet import QuadriDetTrainer
 
 train_factory = {
   'exdet': ExdetTrainer, 
@@ -17,5 +18,6 @@ train_factory = {
   'circledet': CircleTrainer,
   'multi_pose': MultiPoseTrainer,
   'polygondet': PolygonTrainer,
-   'cdiou': CircleTrainerWithOcc
+  'cdiou': CircleTrainerWithOcc,
+  'quadridet': QuadriDetTrainer
 }
