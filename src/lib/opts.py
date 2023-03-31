@@ -247,6 +247,12 @@ class opts(object):
     self.parser.add_argument('--eval_oracle_dep', action='store_true', 
                              help='use ground truth depth.')
 
+    self.parser.add_argument('-if','--input_folder', type=str,
+                             help='path to a folder that contains the folders with the videos to detect')
+    self.parser.add_argument('-of', '--output_folder_json', type=str,
+                             help='path to a txt that contains the paths to the folders to save outputs, should be '+ \
+                                  'ziped with folder_paths_list_txt')
+
   def parse(self, args=''):
     if args == '':
       opt = self.parser.parse_args()
@@ -319,7 +325,12 @@ class opts(object):
     opt.output_w = opt.input_w // opt.down_ratio
     opt.input_res = max(opt.input_h, opt.input_w)
     opt.output_res = max(opt.output_h, opt.output_w)
-    
+
+    if opt.output_folder_json is None and opt.input_folder is not None:
+        if not os.path.isdir(opt.input_folder+'detections'):
+            os.mkdir(opt.input_folder+'detections')
+        opt.output_folder_json = opt.input_folder+'detections/'
+
     if opt.task == 'exdet':
       # assert opt.dataset in ['coco']
       num_hm = 1 if opt.agnostic_ex else opt.num_classes

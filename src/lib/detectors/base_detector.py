@@ -166,13 +166,8 @@ class BaseDetector(object):
     detections = []
     for scale in self.scales:
       scale_start_time = time.time()
-      if not pre_processed:
-        images, meta = self.pre_process(image, scale, meta)
-      else:
-        # import pdb; pdb.set_trace()
-        images = pre_processed_images['images'][scale][0]
-        meta = pre_processed_images['meta'][scale]
-        meta = {k: v.numpy()[0] for k, v in meta.items()}
+      images, meta = self.pre_process(image, scale, meta)
+
       images = images.to(self.opt.device)
       torch.cuda.synchronize()
       pre_process_time = time.time()
