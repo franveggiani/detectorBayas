@@ -61,7 +61,7 @@ def process_videos(opt):
     ret = filter(lambda x: x[0]>0 and x[1]>0, ret)
     dets[frame_number] = { k:list(r[:3]) for k,r in enumerate(ret)}
     frame_number += 1
-    print(f'video:{video_namegit }, frame number: {frame_number}')
+    print(f'video:{video_name}, frame number: {frame_number}')
 
   json.dump(dets, open(opt.output_folder_json + output_folder_name + video_name + '.json', 'w'))
 
