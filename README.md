@@ -1,37 +1,37 @@
 # Cómo se usa
 Para usarlo debemos hacer lo siguiente: Debemos dar permisos a los scripts de compilación
-'''
+```
 chmod +x ./entrypoint.sh
 
 chmod +x ./compiler.sh
-'''
+```
 
 Posteriomente se buildea el contenedor 
-'''
+```
 docker-compose build
 
 docker-compose up
-'''
+```
 
 Para hacer una prueba, simplemente ejecutamos
-'''
+```
 ./peticion.sh
-'''
+```
 
 Que ejecutará la siguiente petición
-'''
+```
 {
   "input_folder": "./input",
   "video_name": "VID_20230322_173233",
   "output_folder": "./output"
 }
-'''
+```
 Al endpoint 
-'''
+```
   curl -X GET http://localhost:8003/detector \
     -H "Content-Type: application/json" \
     -d @body.json
-'''
+```
 
 ## IMPORTANTE: Qué se requiere para usarlo
 
