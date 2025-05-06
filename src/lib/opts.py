@@ -14,7 +14,6 @@ class opts(object):
                              help='ctdet | ddd | multi_pose | exdet | circledet | polygondet | quadridet')
     self.parser.add_argument('--confidence_threshold', type=float, default=0.4,
                              help='minimum confidence for a detection to be considered')
-
     self.parser.add_argument('--dataset', default='monuseg',
                              help='coco | kitti | coco_hp | pascal | kidpath | monuseg | polygons | quadrilaterals2c')
     self.parser.add_argument('--exp_id', default='default')
@@ -325,118 +324,48 @@ class opts(object):
     opt.output_w = opt.input_w // opt.down_ratio
     opt.input_res = max(opt.input_h, opt.input_w)
     opt.output_res = max(opt.output_h, opt.output_w)
-
+    
     if opt.output_folder_json is None and opt.input_folder is not None:
-        if not os.path.isdir(opt.input_folder+'detections'):
-            os.mkdir(opt.input_folder+'detections')
-        opt.output_folder_json = opt.input_folder+'detections/'
+        if not os.path.isdir(opt.input_folder+'_detections'):
+            os.mkdir(opt.input_folder+'_detections')
+        opt.output_folder_json = opt.input_folder+'_detections/'
+    else:
+      if not os.path.isdir(opt.output_folder_json):
+        os.mkdir(opt.output_folder_json)
+        
 
-    if opt.task == 'exdet':
-      # assert opt.dataset in ['coco']
-      num_hm = 1 if opt.agnostic_ex else opt.num_classes
-      opt.heads = {'hm_t': num_hm, 'hm_l': num_hm, 
-                   'hm_b': num_hm, 'hm_r': num_hm,
-                   'hm_c': opt.num_classes}
-      if opt.reg_offset:
-        opt.heads.update({'reg_t': 2, 'reg_l': 2, 'reg_b': 2, 'reg_r': 2})
-    elif opt.task == 'ddd':
-      # assert opt.dataset in ['gta', 'kitti', 'viper']
-      opt.heads = {'hm': opt.num_classes, 'dep': 1, 'rot': 8, 'dim': 3}
-      if opt.reg_bbox:
-        opt.heads.update(
-          {'wh': 2})
-      if opt.reg_offset:
-        opt.heads.update({'reg': 2})
-    elif opt.task == 'ctdet':
-      # assert opt.dataset in ['pascal', 'coco']
-      opt.heads = {'hm': opt.num_classes,
-                   'wh': 2 if not opt.cat_spec_wh else 2 * opt.num_classes}
-      if opt.reg_offset:
-        opt.heads.update({'reg': 2})
-    elif opt.task == 'circledet':
-      # assert opt.dataset in ['pascal', 'coco']
-      opt.heads = {'hm': opt.num_classes,
-                   'cl': 1 if not opt.cat_spec_wh else 1 * opt.num_classes}
-
-      if opt.reg_offset:
-        opt.heads.update({'reg': 2})
-      #cdiou
-    elif opt.task == 'cdiou':
+    if opt.task == 'cdiou':
       # assert opt.dataset in ['pascal', 'coco']
       opt.heads = {'hm': opt.num_classes,
                    'cl': 1 if not opt.cat_spec_wh else 1 * opt.num_classes,
                    'reg': 2,
                    'occ': 1}
-
-    elif opt.task == 'polygondet':
-      opt.heads = {'hm': opt.num_classes,
-                   'cl': opt.vertices_number * 2 }#* opt.num_classes
-      if opt.reg_offset:
-        opt.heads.update({'reg': 2})
-
-    elif opt.task == 'multi_pose':
-      # assert opt.dataset in ['coco_hp']
-      opt.flip_idx = dataset.flip_idx
-      opt.heads = {'hm': opt.num_classes, 'wh': 2, 'hps': 34}
-      if opt.reg_offset:
-        opt.heads.update({'reg': 2})
-      if opt.hm_hp:
-        opt.heads.update({'hm_hp': 17})
-      if opt.reg_hp_offset:
-        opt.heads.update({'hp_offset': 2})
-    elif opt.task == 'quadridet':
-      # assert opt.dataset in ['coco_hp']
-      opt.flip_idx = dataset.flip_idx
-      opt.heads = {'hm': opt.num_classes, 'wh': 2, 'hps': 8}
-      if opt.reg_offset:
-        opt.heads.update({'reg': 2})
-      if opt.hm_hp:
-        opt.heads.update({'hm_hp': 4})
-      if opt.reg_hp_offset:
-        opt.heads.update({'hp_offset': 2})
     else:
       assert 0, 'task not defined!'
     print('heads', opt.heads)
     return opt
 
-  def init(self, args=''):
+  def init(self, args=None):
     default_dataset_info = {
-      'ctdet': {'default_resolution': [512, 512], 'num_classes': 80,
-                'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
-                'dataset': 'coco'},
-      'circledet': {'default_resolution': [1024, 576], 'num_classes': 1,
-                  'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
-                  'dataset': 'grapes'},
-      'cdiou': {'default_resolution': [1024, 576], 'num_classes': 1,
-                   'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
-                   'dataset': 'grapes_with_occ_reg'},
-      'polygondet': {'default_resolution': [1024, 576], 'num_classes': 1,
-                  'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
-                  'dataset': 'polygons'},
-      'polygondet2c': {'default_resolution': [1024, 576], 'num_classes': 2,
-                     'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
-                     'dataset': 'polygons2c'},
-      'exdet': {'default_resolution': [512, 512], 'num_classes': 80, 
-                'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
-                'dataset': 'coco'},
-      'multi_pose': {
-        'default_resolution': [512, 512], 'num_classes': 1, 
-        'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
-        'dataset': 'coco_hp', 'num_joints': 17,
-        'flip_idx': [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], 
-                     [11, 12], [13, 14], [15, 16]]},
-      'ddd': {'default_resolution': [384, 1280], 'num_classes': 3, 
-                'mean': [0.485, 0.456, 0.406], 'std': [0.229, 0.224, 0.225],
-                'dataset': 'kitti'},
-      'quadridet': {'default_resolution': [1024, 576], 'num_classes': 2,
-                         'mean': [0.408, 0.447, 0.470], 'std': [0.289, 0.274, 0.278],
-                         'dataset': 'quadrilaterals2c'},
+      'cdiou': {
+        'default_resolution': [1024, 576], 
+        'num_classes': 1,
+        'mean': [0.408, 0.447, 0.470],
+        'std': [0.289, 0.274, 0.278],
+        'dataset': 'grapes_with_occ_reg'
+      }
     }
+    
     class Struct:
       def __init__(self, entries):
         for k, v in entries.items():
             self.__setattr__(k, v)
-    opt = self.parse(args)
+    
+    if args is None:
+      # Explicitly pass empty list to avoid parsing sys.argv
+      opt = self.parse([])
+    else:
+        opt = self.parse(args)
     dataset = Struct(default_dataset_info[opt.task])
     opt.dataset = dataset.dataset
     opt = self.update_dataset_info_and_set_heads(opt, dataset)

@@ -64,27 +64,12 @@ class BaseDetector(object):
             'out_width': inp_width // self.opt.down_ratio}
     return images, meta
 
-  def process(self, images, return_time=False):
-    raise NotImplementedError
-
-  def post_process(self, dets, meta, scale=1):
-    raise NotImplementedError
-
-  def merge_outputs(self, detections):
-    raise NotImplementedError
-
-  def debug(self, debugger, images, dets, output, scale=1):
-    raise NotImplementedError
-
-  def show_results(self, debugger, image, results):
-   raise NotImplementedError
-
   def run(self, image_or_path_or_tensor, meta=None):
     load_time, pre_time, net_time, dec_time, post_time = 0, 0, 0, 0, 0
     merge_time, tot_time = 0, 0
-    debugger = Debugger(dataset=self.opt.dataset, ipynb=(self.opt.debug==3),
-                        theme=self.opt.debugger_theme)
-    debugger.opt = self.opt
+    # debugger = Debugger(dataset=self.opt.dataset, ipynb=(self.opt.debug==3),
+                        # theme=self.opt.debugger_theme)
+    # debugger.opt = self.opt
     start_time = time.time()
     pre_processed = False
     if isinstance(image_or_path_or_tensor, np.ndarray):
@@ -147,8 +132,8 @@ class BaseDetector(object):
   def run_det_for_byte(self, image_or_path_or_tensor, meta=None):
     load_time, pre_time, net_time, dec_time, post_time = 0, 0, 0, 0, 0
     merge_time, tot_time = 0, 0
-    debugger = Debugger(dataset=self.opt.dataset, ipynb=(self.opt.debug == 3),
-                        theme=self.opt.debugger_theme)
+    # debugger = Debugger(dataset=self.opt.dataset, ipynb=(self.opt.debug == 3),
+    #                     theme=self.opt.debugger_theme)
     start_time = time.time()
     pre_processed = False
     if isinstance(image_or_path_or_tensor, np.ndarray):
