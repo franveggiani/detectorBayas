@@ -1,4 +1,13 @@
-# Cómo se usa
+## IMPORTANTE: Qué se requiere para usarlo
+
+1. Tener instalado los drivers de nvidia
+2. Instalar Nvidia Container Toolkit 
+
+De lo contrario, esto no va a funcionar
+
+Si se tiene instalado Docker Desktop se debe instalar ambos drivers en la imagen WSL que utiliza docker.
+
+## Cómo se usa
 Para usarlo debemos hacer lo siguiente: Debemos dar permisos a los scripts de compilación
 ```
 chmod +x ./entrypoint.sh
@@ -33,11 +42,4 @@ Al endpoint
     -d @body.json
 ```
 
-## IMPORTANTE: Qué se requiere para usarlo
 
-1. Tener instalado los drivers de nvidia
-2. Instalar Nvidia Container Toolkit 
-
-De lo contrario, esto no va a funcionar
-
-Si se tiene instalado Docker Desktop se debe instalar ambos drivers en la imagen WSL que utiliza docker.
