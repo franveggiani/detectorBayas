@@ -71,7 +71,7 @@ class opts(object):
     self.parser.add_argument('--debugger_theme', default='white',
                              choices=['white', 'black'])
     
-    # model
+    # model MODELO CONVOLUTIONAL EN USO
     self.parser.add_argument('--arch', default='hourglass',
                              help='model architecture. Currently tested'
                                   'res_18 | res_101 | resdcn_18 | resdcn_101 |'

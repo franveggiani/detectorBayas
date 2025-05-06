@@ -37,7 +37,7 @@ class CircledetIOUDetector(BaseDetector):
         reg = reg[0:1] if reg is not None else None
       torch.cuda.synchronize()
       forward_time = time.time()
-      dets = cdiou_decode(hm, cl, occ, self.opt,reg=reg, K=self.opt.K )
+      dets = cdiou_decode(hm, cl, occ, self.opt,reg=reg, K=self.opt.K)
       #x, y, r, occ, scores, clses],
     if return_time:
       return output, dets, forward_time
