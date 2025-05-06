@@ -1,7 +1,8 @@
 ## IMPORTANTE: Qué se requiere para usarlo
 
 1. Tener instalado los drivers de nvidia
-2. Instalar Nvidia Container Toolkit 
+2. Instalar Nvidia Container Toolkit
+3. Descargar y mover a la carpeta raíz: https://drive.google.com/file/d/1XsvtpexSGl8kwA1xgeCUBpyOIuSvXy8V/view 
 
 De lo contrario, esto no va a funcionar
 
