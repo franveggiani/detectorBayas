@@ -1,10 +1,8 @@
-from fastapi import FastAPI
-from .schemas import DetectorRequest
 from src.lib.opts import opts
 import os
 import torch
 from src.lib.detectors.circledet_iou import CircledetIOUDetector
-from .api.utils import process_videos
+from .utils import process_videos
 
 from celery import Celery
 

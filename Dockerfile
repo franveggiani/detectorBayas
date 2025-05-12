@@ -41,9 +41,6 @@ SHELL ["conda", "run", "-n", "CircleNet", "/bin/bash", "-c"]
 # cudnn.enabled
 RUN sed -i "1254s/torch\.backends\.cudnn\.enabled/False/g" $(python -c "import torch; print(torch.__file__)")/nn/functional.py || true
 
-# Instalar fastapi y sus dependencias
-RUN pip install fastapi==0.83.0 pydantic==1.8.2 uvicorn[standard]
-
 # Copiar y ejecutar el script de instalación de PyTorch 0.4.1
 COPY install_pytorch041.sh /tmp/install_pytorch041.sh
 RUN chmod +x /tmp/install_pytorch041.sh && \
@@ -60,12 +57,6 @@ RUN conda install -y cffi
 # Copiar proyecto
 WORKDIR /app
 COPY . .
-
-# DCNv2 y dependencias externas
-# RUN cd /app/src/lib/models/networks/DCNv2 && \
-#     conda run -n CircleNet bash ./make.sh && \
-#     cd /app/src/lib/external && \
-#     conda run -n CircleNet make
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/app/src/lib:/app/src/lib/external:/app/src/lib/models/networks/DCNv2
