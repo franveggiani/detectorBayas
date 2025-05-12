@@ -54,6 +54,8 @@ RUN git clone https://github.com/cocodataset/cocoapi.git /opt/cocoapi && \
 
 RUN conda install -y cffi
 
+RUN pip install celery
+
 # Copiar proyecto
 WORKDIR /app
 COPY . .

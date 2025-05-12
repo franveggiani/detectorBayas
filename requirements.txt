@@ -13,4 +13,3 @@ mkl-fft
 mkl-random
 scipy==1.5.4
 pycocotools
-celery
