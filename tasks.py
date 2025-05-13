@@ -2,7 +2,7 @@ from src.lib.opts import opts
 import os
 import torch
 from src.lib.detectors.circledet_iou import CircledetIOUDetector
-from .utils import process_videos
+from utils import process_videos
 
 from celery import Celery
 
