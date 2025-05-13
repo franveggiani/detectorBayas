@@ -6,7 +6,9 @@ from utils import process_videos
 
 from celery import Celery
 
-app = Celery('detectorBayas', broker='redis://redis:6379/0')
+NUM_WORKERS = 1
+
+app = Celery('detectorBayas', broker='redis://redis:6379/0', worker_concurrency=NUM_WORKERS)
 
 SHARED_PATH = '/shared'
 
