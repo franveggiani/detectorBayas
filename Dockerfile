@@ -32,7 +32,7 @@ RUN conda env create -f environment.yml
 
 COPY requirements.txt .
 
-RUN conda run -n CircleNet pip install -r requirements.txt
+RUN conda run -n CircleNet pip install --default-timeout=1000 -r requirements.txt
 
 # Activar el entorno en conda
 SHELL ["conda", "run", "-n", "CircleNet", "/bin/bash", "-c"]
