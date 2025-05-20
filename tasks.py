@@ -8,7 +8,7 @@ from celery import Celery
 
 NUM_WORKERS = 1
 
-app = Celery('detectorBayas', broker='redis://redis:6379/0', worker_concurrency=NUM_WORKERS)
+app = Celery('detectorBayas', broker='redis://redis:6379/0', worker_concurrency=NUM_WORKERS, queue='detector_queue')
 
 SHARED_PATH = '/shared'
 
